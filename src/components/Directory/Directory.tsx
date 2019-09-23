@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import './Directory.scss';
 
-const Directory = () => {
-  const [sections] = useState([
+const Directory: React.FC = () => {
+  const [sections] = useState<IDirectoryItem[]>([
     {
       title: 'hats',
       imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
@@ -40,11 +40,19 @@ const Directory = () => {
 
   return (
     <div className="directory-menu">
-      {sections.map(({ title, imageUrl, id, size }) => (
-        <MenuItem id={id} title={title} imageUrl={imageUrl} size={size} />
+      {sections.map(({ id, ...otherSectionProps }) => (
+        <MenuItem key={id} {...otherSectionProps} />
       ))}
     </div>
   );
 };
 
 export default Directory;
+
+interface IDirectoryItem {
+  title: string;
+  imageUrl: string;
+  id: number;
+  linkUrl: string;
+  size?: string;
+}

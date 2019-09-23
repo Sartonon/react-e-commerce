@@ -1,0 +1,20 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    "member-access": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "quotemark": false,
+    "no-console": false,
+    "member-ordering": false,
+    "semicolon": false,
+    "jsx-no-lambda": false,
+    "jsx-boolean-value": false
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+  }
+}
