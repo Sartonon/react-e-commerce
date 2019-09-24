@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import './Directory.scss';
 
-const Directory: React.FC = () => {
+const Directory: React.FC = (): JSX.Element => {
   const [sections] = useState<IDirectoryItem[]>([
     {
       title: 'hats',

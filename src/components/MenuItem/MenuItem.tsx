@@ -10,7 +10,7 @@ const MenuItem: FC<IMenuItemProps> = ({
   history,
   match,
   linkUrl,
-}) => (
+}): JSX.Element => (
   <div
     className={`${size ? size : ''} menu-item`}
     onClick={() => history.push(`${match.url}${linkUrl}`)}
