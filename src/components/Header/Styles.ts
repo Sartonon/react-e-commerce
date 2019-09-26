@@ -1,4 +1,7 @@
-.header {
+import styled from '@emotion/styled';
+
+export const Header = styled('header')<{ color?: string }>`
+  color: ${props => props.color};
   height: 70px;
   width: 100%;
   display: flex;
@@ -23,4 +26,4 @@
       cursor: pointer;
     }
   }
-}
+`;

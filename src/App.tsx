@@ -7,18 +7,29 @@ import HomePage from './pages/HomePage/HomePage';
 import ShopPage from './pages/ShopPage/ShopPage';
 import Header from './components/Header/Header';
 import SigninPage from './pages/SigninPage/SigninPage';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfile } from './firebase/firebase.utils';
+import { IFirebaseUser } from './types';
 
 const App: FC = (): JSX.Element => {
-  const [currentUser, setUser] = useState<firebase.User | null>(null);
+  const [currentUser, setUser] = useState<IFirebaseUser | null>(null);
   const unsubscribeFromAuth = useRef<firebase.Unsubscribe>();
 
   useEffect((): (() => void) => {
-    // tslint:disable-next-line: no-shadowed-variable
     unsubscribeFromAuth.current = auth.onAuthStateChanged(
-      (user: firebase.User | null) => {
-        if (user) {
-          setUser(user);
+      async (userAuth: firebase.User | null) => {
+        console.log(userAuth);
+        if (userAuth) {
+          const userRef = await createUserProfile(userAuth);
+          if (userRef) {
+            userRef.onSnapshot(snapshot => {
+              setUser({
+                id: snapshot.id,
+                ...snapshot.data(),
+              });
+            });
+          }
+        } else {
+          setUser(null);
         }
       },
     );
@@ -30,7 +41,7 @@ const App: FC = (): JSX.Element => {
     };
   }, []);
 
-  console.log(currentUser);
+  console.log({ currentUser });
 
   return (
     <div>

@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import './Header.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
+import { IFirebaseUser } from '../../types';
+import { Header as HeaderStyles } from './Styles';
 
 interface IHeaderProps {
-  currentUser: firebase.User | null;
+  currentUser: IFirebaseUser | null;
 }
 
 const Header: FC<IHeaderProps> = ({ currentUser }): JSX.Element => (
-  <header className="header">
+  <HeaderStyles>
     <Link className="logo-container" to="/">
       <Logo className="logo" />
     </Link>
@@ -29,7 +30,7 @@ const Header: FC<IHeaderProps> = ({ currentUser }): JSX.Element => (
         <Link to="/signin">SIGN IN</Link>
       )}
     </div>
-  </header>
+  </HeaderStyles>
 );
 
 export default Header;
