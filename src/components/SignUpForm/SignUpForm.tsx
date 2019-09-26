@@ -5,7 +5,7 @@ import CustomButton from '../CustomButton/CustomButton';
 import { auth, createUserProfile } from '../../firebase/firebase.utils';
 import { SignUpStyles } from './Styles';
 
-const SignUp = () => {
+const SignUpForm = () => {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -79,4 +79,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpForm;

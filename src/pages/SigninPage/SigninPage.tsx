@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 
 import SignInForm from '../../components/SignInForm/SignInForm';
 import './SigninPage.scss';
-import SignUp from '../../components/SignUp/SignUp';
+import SignUpForm from '../../components/SignUpForm/SignUpForm';
 
 const SigninPage: FC = (): JSX.Element => (
   <div className="sign-in-and-sign-up">
     <SignInForm />
-    <SignUp />
+    <SignUpForm />
   </div>
 );
 
