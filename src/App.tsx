@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import './App.css';
 
@@ -12,13 +12,14 @@ import { auth, createUserProfile } from './firebase/firebase.utils';
 import { IUser } from './redux/user/user.types';
 import { setCurrentUser } from './redux/user/user.actions';
 import { Dispatch } from 'redux';
-import { ReduxActions } from './redux';
+import { ReduxActions, StoreState } from './redux';
 
 interface IAppProps {
   setCurrentUser: (user: IUser | null) => void;
+  currentUser: IUser | null;
 }
 
-const App: FC<IAppProps> = ({ setCurrentUser }): JSX.Element => {
+const App: FC<IAppProps> = ({ setCurrentUser, currentUser }): JSX.Element => {
   const unsubscribeFromAuth = useRef<firebase.Unsubscribe>();
 
   useEffect((): (() => void) => {
@@ -53,17 +54,24 @@ const App: FC<IAppProps> = ({ setCurrentUser }): JSX.Element => {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/shop" component={ShopPage} />
-        <Route path="/signin" component={SigninPage} />
+        <Route
+          path="/signin"
+          render={() => (currentUser ? <Redirect to="/" /> : <SigninPage />)}
+        />
       </Switch>
     </div>
   );
 };
+
+const mapStateToProps = ({ user }: StoreState) => ({
+  currentUser: user.currentUser,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxActions>) => ({
   setCurrentUser: (user: IUser | null) => dispatch(setCurrentUser(user)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(App);
