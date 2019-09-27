@@ -11,7 +11,9 @@
     "member-ordering": false,
     "semicolon": false,
     "jsx-no-lambda": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "interface-name": false,
+    "no-shadowed-variable": false
   },
   "rulesDirectory": [],
   "linterOptions": {

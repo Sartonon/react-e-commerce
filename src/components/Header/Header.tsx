@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
-import { IFirebaseUser } from '../../types';
 import { Header as HeaderStyles } from './Styles';
+import { StoreState } from '../../redux';
+import { IUser } from '../../redux/user/user.types';
 
 interface IHeaderProps {
-  currentUser: IFirebaseUser | null;
+  currentUser: IUser | null;
 }
 
 const Header: FC<IHeaderProps> = ({ currentUser }): JSX.Element => (
@@ -33,4 +35,8 @@ const Header: FC<IHeaderProps> = ({ currentUser }): JSX.Element => (
   </HeaderStyles>
 );
 
-export default Header;
+const mapStateToProps = (state: StoreState) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(Header);

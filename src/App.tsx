@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import './App.css';
@@ -8,28 +9,33 @@ import ShopPage from './pages/ShopPage/ShopPage';
 import Header from './components/Header/Header';
 import SigninPage from './pages/SigninPage/SigninPage';
 import { auth, createUserProfile } from './firebase/firebase.utils';
-import { IFirebaseUser } from './types';
+import { IUser } from './redux/user/user.types';
+import { setCurrentUser } from './redux/user/user.actions';
+import { Dispatch } from 'redux';
+import { ReduxActions } from './redux';
 
-const App: FC = (): JSX.Element => {
-  const [currentUser, setUser] = useState<IFirebaseUser | null>(null);
+interface IAppProps {
+  setCurrentUser: (user: IUser | null) => void;
+}
+
+const App: FC<IAppProps> = ({ setCurrentUser }): JSX.Element => {
   const unsubscribeFromAuth = useRef<firebase.Unsubscribe>();
 
   useEffect((): (() => void) => {
     unsubscribeFromAuth.current = auth.onAuthStateChanged(
       async (userAuth: firebase.User | null) => {
-        console.log(userAuth);
         if (userAuth) {
           const userRef = await createUserProfile(userAuth);
           if (userRef) {
             userRef.onSnapshot(snapshot => {
-              setUser({
+              setCurrentUser({
                 id: snapshot.id,
                 ...snapshot.data(),
               });
             });
           }
         } else {
-          setUser(null);
+          setCurrentUser(null);
         }
       },
     );
@@ -39,13 +45,11 @@ const App: FC = (): JSX.Element => {
         unsubscribeFromAuth.current();
       }
     };
-  }, []);
-
-  console.log({ currentUser });
+  }, [setCurrentUser]);
 
   return (
     <div>
-      <Header currentUser={currentUser} />
+      <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/shop" component={ShopPage} />
@@ -55,4 +59,11 @@ const App: FC = (): JSX.Element => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch: Dispatch<ReduxActions>) => ({
+  setCurrentUser: (user: IUser | null) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(App);
