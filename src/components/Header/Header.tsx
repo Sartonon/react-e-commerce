@@ -7,6 +7,8 @@ import { auth } from '../../firebase/firebase.utils';
 import { Header as HeaderStyles } from './Styles';
 import { StoreState } from '../../redux';
 import { IUser } from '../../redux/user/user.types';
+import CartIcon from '../CartIcon/CartIcon';
+import CartDropdown from '../CartDropdown/CartDropdown';
 
 interface IHeaderProps {
   currentUser: IUser | null;
@@ -31,12 +33,18 @@ const Header: FC<IHeaderProps> = ({ currentUser }): JSX.Element => (
       ) : (
         <Link to="/signin">SIGN IN</Link>
       )}
+      <CartIcon />
     </div>
+    <CartDropdown />
   </HeaderStyles>
 );
 
-const mapStateToProps = (state: StoreState) => ({
-  currentUser: state.user.currentUser,
+const mapStateToProps = ({
+  user: { currentUser },
+  cart: { hidden },
+}: StoreState) => ({
+  currentUser,
+  hidden,
 });
 
 export default connect(mapStateToProps)(Header);
